@@ -2,4 +2,3 @@
 """ Test link Many-To-Many Place <> Amenity
 """
 from models import *
-
