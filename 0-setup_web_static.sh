@@ -2,46 +2,27 @@
 # This script sets up web servers for the deployment of web_static
 
 #Install Nginx if not already installed
-if ! dpkg -l | grep -q nginx; then
-	sudo apt-get update
-	sudo apt-get -y install nginx
-fi
+sudo apt-get update
+sudo apt-get -y install nginx
 
-# Create directories if not exist
-directories=("/data" "/data/web_static" "/data/web_static/releases" "/data/web_static/shared" "/data/web_static/releases/test")
-for dir in "${directories[@]}"; do
-	if [ ! -d "$dir" ]; then
-		mkdir -P "$dir"
-		chown -R ubuntu:ubuntu "$dir"
-	fi
-done
-
-# Create a fake HTML file for testing
-fake_html="/data/web_static/releases/test/index.html"
-if [ ! -f "$fake_html" ]; then
-	echo "<html>
+sudo mkdir -p /data/
+sudo mkdir -p /data/web_static/
+sudo mkdir -p /data/web_static/releases/
+sudo mkdir -p /data/web_static/shared/
+sudo mkdir -p /data/web_static/releases/test/
+sudo touch /data/web_static/releases/test/index.html
+sudo echo '<html>
 	<head>
 	</head>
 	<body>
 	  Holberton School
 	</body>
-</html>" > "$fake_html"
-fi
+</html>' | sudo tee /data/web_static/releases/test/index.html
 
-# Create symbolic link
-symlink="/data/web_static/current"
-if [ -L "$symlink" ]; then
-	rm "$symlink"
-fi
-ln -sf /data/web_static/releases/test/ "$symlink"
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-# Update nginx configuration
-nginx_config="/etc/nginx/sites-available/default"
-if ! grep -q "location /hbnb_static/ {" "$nginx_config"; then
-	sed -i '/server_name code021.tech;/a\\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' "$nginx_config"
-fi
+sudo chown -R ubuntu:ubuntu /data/
 
-# Restart nginx
+sudo sed -i '/listen 80 default_server/a location /hbnb_static { alias /data/web_static/current/;}' /etc/nginx/sites-enabled/default
+
 sudo service nginx restart
-
-exit 0
