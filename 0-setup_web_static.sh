@@ -2,45 +2,46 @@
 # This script sets up web servers for the deployment of web_static
 
 #Install Nginx if not already installed
-sudo apt-get update
-sudo apt-get install -y nginx
+if ! dpkg -l | grep -q nginx; then
+	sudo apt-get update
+	sudo apt-get -y install nginx
+fi
 
-# Create directories
-sudo mkdir -p /data/
-sudo mkdir -p /data/web_static/
-sudo mkdir -p /data/web_static/releases/
-sudo mkdir -p /data/web_static/shared/
-sudo mkdir -p /data/web_static/releases/test/
-sudo touch /data/web_static/releases/test/index.html
-sudo echo '<html>
- <head>
- </head>
- <body>
-    Holberton School
- </body>
-</html>' | sudo tee /data/web_static/releases/test/index.html > /dev/null
+# Create directories if not exist
+directories=("/data" "/data/web_static" "/data/web_static/releases" "/data/web_static/shared" "/data/web_static/releases/test")
+for dir in "${directories[@]}"; do
+	if [ ! -d "$dir" ]; then
+		mkdir -P "$dir"
+		chown -R ubuntu:ubuntu "$dir"
+	fi
+done
+
+# Create a fake HTML file for testing
+fake_html="/data/web_static/releases/test/index.html"
+if [ ! -f "$fake_html" ]; then
+	echo "<html>
+	<head>
+	</head>
+	<body>
+	  Holberton School
+	</body>
+</html>" > "$fake_html"
+fi
 
 # Create symbolic link
-sudo ln -sfn /data/web_static/releases/test/ /data/web_static/current
+symlink="/data/web_static/current"
+if [ -L "$symlink" ]; then
+	rm "$symlink"
+fi
+ln -sf /data/web_static/releases/test/ "$symlink"
 
-# Set ownership of /data/ folder to ubuntu user and group
-sudo chown -R ubuntu:ubuntu /data/
+# Update nginx configuration
+nginx_config="/etc/nginx/sites-available/default"
+if ! grep -q "location /hbnb_static/ {" "$nginx_config"; then
+	sed -i '/server_name _;/a\\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' "$nginx_config"
+fi
 
-# Update Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
-sudo bash -c 'cat > /etc/nginx/sites-available/hbnb_static << EOF
-server {
-    listen 80;
-    server_name code021.tech;
+# Restart nginx
+sudo service nginx restart
 
-    location /hbnb_static/ {
-    	alias /data/web_static/current/;
-	try_files \$uri \$uri/ =404;
-    }
-}
-EOF'
-
-# Enable the site and restart Nginx
-sudo ln -s /etc/nginx/sites-available/hbnb_static /etc/nginx/sites-enabled/
-sudo systemctl restart nginx
-
-echo "Web servers setup for deployment of web_static is complete."
+exit 0
