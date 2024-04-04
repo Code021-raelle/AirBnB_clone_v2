@@ -38,7 +38,7 @@ ln -sf /data/web_static/releases/test/ "$symlink"
 # Update nginx configuration
 nginx_config="/etc/nginx/sites-available/default"
 if ! grep -q "location /hbnb_static/ {" "$nginx_config"; then
-	sed -i '/server_name _;/a\\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' "$nginx_config"
+	sed -i '/server_name code021.tech;/a\\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' "$nginx_config"
 fi
 
 # Restart nginx
