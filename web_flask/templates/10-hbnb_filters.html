@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>HBNB</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/3-header.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/4-common.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/6-filters.css') }}">
+    </head>
+    <body>
+        <header>
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        </header>
+        <main>
+            <section>
+                <h3>States</h3>
+                <ul>
+                    {% for state in states %}
+                        <li>{{ state.name }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+            <section>
+                <h3>Amenities</h3>
+                <ul>
+                    {% for amenity in amenities %}
+                        <li>{{ amenity.name }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </main>
+        <footer>
+            <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Icon">
+        </footer>
+    </body>
+</html>

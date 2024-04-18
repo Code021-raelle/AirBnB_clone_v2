@@ -46,3 +46,7 @@ class DBStorage:
 
     def reload(self):
         Base.metadata.create_all(self.__engine)
+
+    def close(self):
+        """Close the storage by removing the current session."""
+        self.__session.remove()

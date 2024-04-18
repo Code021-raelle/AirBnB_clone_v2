@@ -12,3 +12,8 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship(
             "City", backref="state", cascade="all, delete")
+
+    @property
+    def cities(self):
+        """Return the list of City objects linked to the current state."""
+        return [city for city in storage.all(City).values() if city.state_id == self.id]
