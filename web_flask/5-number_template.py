@@ -1,5 +1,10 @@
 #!/usr/bin/python3
-from flask import Flask, request, render_template
+"""
+Starts a Flask web application.
+"""
+
+from flask import Flask, render_template
+from markupsafe import escape
 
 app = Flask(__name__)
 
@@ -22,36 +27,30 @@ def c_route(text):
     Display 'C ', followed by the value of the text variable,
     replacing underscores with spaces.
     """
-    text = text.replace('_', ' ')
-    return f"C {text}"
+    return "C {}".format(escape(text).replace('_', ' '))
 
 
 @app.route(
-        '/python/<text>', strict_slashes=False, defaults={'text': 'is cool'})
-@app.route('/python', strict_slashes=False)
+        '/python/', strict_slashes=False, defaults={'text': 'is cool'})
+@app.route('/python/<text>', strict_slashes=False)
 def python_route(text):
     """
     Display 'Python ', followed by the value of the text variable,
     replacing underscores with spaces.
     The default value of text is 'is cool'.
     """
-    text = text.replace('_', ' ')
-    return f"Python {text}"
+    return "Python {}".format(escape(text).replace('_', ' '))
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def number_route(n):
     """Display 'n is a number' only if n is an integer."""
-    if not n.isdigit():
-        abort(404)
-    return f"{n} is a number"
+    return "{} is a number".format(n)
 
 
-@app.route('/number_template/<n>', strict_slashes=False)
+@app.route('/number_template/<int:n>', strict_slashes=False)
 def number_template(n):
     """Display a HTML page only if n is an integer."""
-    if not n.isdigit():
-        abort(404)
     return render_template('5-number.html', n=n)
 
 

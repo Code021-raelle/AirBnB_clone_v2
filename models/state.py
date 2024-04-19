@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from models.city import City
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 
@@ -14,7 +13,14 @@ class State(BaseModel, Base):
             "City", backref="state", cascade="all, delete")
 
 
-    @property
-    def cities(self):
-        """Return the list of City objects linked to the current state."""
-        return [city for city in storage.all(City).values() if city.state_id == self.id]
+    if os.getenv('HBNB_TYPR_STORAGE') != 'db':
+        @property
+        def cities(self):
+            """Return the list of City objects linked to the current state."""
+            from models import storage
+            from models.city import City
+            city_list = []
+            for key, city in storage.all(City).items():
+                if city.state_id == self.id:
+                    city_list.append(city)
+                return city_list

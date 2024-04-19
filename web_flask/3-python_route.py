@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-from flask import Flask, request
+from flask import Flask
+from markupsafe import escape
 
 app = Flask(__name__)
 
@@ -22,21 +23,19 @@ def c_route(text):
     Display 'C ', followed by the value of the text variable,\
     replacing underscores with spaces.
     """
-    text = text.replace('_', ' ')
-    return f"C {text}"
+    return "C {}".format(escape(text).replace('_', ' '))
 
 
 @app.route(
-        '/python/<text>', strict_slashes=False, defaults={'text': 'is cool'})
-@app.route('/python', strict_slashes=False)
+        '/python/', strict_slashes=False, defaults={'text': 'is cool'})
+@app.route('/python/<text>', strict_slashes=False)
 def python_route(text):
     """
     Display 'Python ', followed by the value of the text variable,
     replacing underscores with spaces.
     The default value of text is 'is cool'.
     """
-    text = text.replace('_', ' ')
-    return f"Python {text}"
+    return "Python {}".format(escape(text).replace('_', ' '))
 
 
 if __name__ == '__main__':
