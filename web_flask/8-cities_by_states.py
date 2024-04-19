@@ -18,6 +18,7 @@ def cities_by_states():
         state.cities = sorted(state.cities, key=lambda c: c.name)
     return render_template('8-cities_by_states.html', states=states)
 
+
 @app.teardown_appcontext
 def close_session(exception=None):
     """Close the storage after each request."""

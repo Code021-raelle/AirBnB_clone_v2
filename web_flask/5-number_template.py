@@ -9,10 +9,12 @@ def hello_hbnb():
     """Display 'Hello HBNB!'."""
     return "Hello HBNB!"
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """Display 'HBNB'."""
     return "HBNB"
+
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_route(text):
@@ -23,7 +25,9 @@ def c_route(text):
     text = text.replace('_', ' ')
     return f"C {text}"
 
-@app.route('/python/<text>', strict_slashes=False, defaults={'text': 'is cool'})
+
+@app.route(
+        '/python/<text>', strict_slashes=False, defaults={'text': 'is cool'})
 @app.route('/python', strict_slashes=False)
 def python_route(text):
     """
@@ -34,12 +38,14 @@ def python_route(text):
     text = text.replace('_', ' ')
     return f"Python {text}"
 
+
 @app.route('/number/<n>', strict_slashes=False)
 def number_route(n):
     """Display 'n is a number' only if n is an integer."""
     if not n.isdigit():
         abort(404)
     return f"{n} is a number"
+
 
 @app.route('/number_template/<n>', strict_slashes=False)
 def number_template(n):

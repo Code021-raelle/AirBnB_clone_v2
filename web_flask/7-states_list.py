@@ -11,6 +11,7 @@ def states_list():
     states = sorted(storage.all(State).values(), key=lambda s: s.name)
     return render_template('7.states_list.html', states=states)
 
+
 @app.teardown_appcontext
 def close_session(exception=None):
     """Close the storage after each request."""

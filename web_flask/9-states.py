@@ -13,6 +13,7 @@ def states():
     states = sorted(storage.all(State).values(), key=lambda s: s.name)
     return render_template('9-states.html', states=states)
 
+
 @app.route('/states/<id>', strict_slashes=False)
 def state_detail(id):
     """Display a HTML page with details of a State object and its cities."""
@@ -22,6 +23,7 @@ def state_detail(id):
         return render_template('9-states.html', state=state)
     else:
         return render_template('9-states.html', not_found=True)
+
 
 @app.teardown_appcontext
 def close_session(exception=None):

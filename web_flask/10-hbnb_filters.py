@@ -12,7 +12,9 @@ def hbnb_filters():
     """Display a HTML page with filters for states and amenities."""
     states = sorted(storage.all(State).values(), key=lambda s: s.name)
     amenities = sorted(storage.all(Amenity).values(), key=lambda a: a.name)
-    return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
+    return render_template(
+            '10-hbnb_filters.html', states=states, amenities=amenities)
+
 
 @app.teardown_appcontext
 def close_session(exception=None):

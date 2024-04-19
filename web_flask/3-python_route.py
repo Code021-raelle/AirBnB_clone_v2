@@ -9,10 +9,12 @@ def hello_hbnb():
     """Display 'Hello HBNB!'."""
     return "Hello HBNB!"
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """Display 'HBNB'."""
     return "HBNB"
+
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_route(text):
@@ -23,11 +25,13 @@ def c_route(text):
     text = text.replace('_', ' ')
     return f"C {text}"
 
-@app.route('/python/<text>', strict_slashes=False, defaults={'text': 'is cool'})
+
+@app.route(
+        '/python/<text>', strict_slashes=False, defaults={'text': 'is cool'})
 @app.route('/python', strict_slashes=False)
 def python_route(text):
     """
-    Display 'Python ', followed by the value of the text variable, 
+    Display 'Python ', followed by the value of the text variable,
     replacing underscores with spaces.
     The default value of text is 'is cool'.
     """
