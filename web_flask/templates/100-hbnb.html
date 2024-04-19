@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>HBNB</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='styles/3-header.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='styles/4-common.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='styles/6-filters.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='styles/8-places.css') }}">
+	</head>
+	<body>
+		<header>
+			<h1>Places</h1>
+		</header>
+		<section class="filters">
+			<h2 class="title">Filters</h2>
+			<div class="container">
+				<div class="locations">
+					<h3>States</h3>
+					<ul class="locations">
+						{% for state in states %}
+							<li>{{ state.name }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="cities">
+					<h3>Cities</h3>
+					<ul class="cities">
+						{% for city in cities %}
+							<li>{{ city.name }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="amenities">
+					<h3>Amenities</h3>
+					<ul class="amenities">
+						{% for amenity in amenities %}
+							<li>{{ amenity.name }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section class="places">
+			<h2 class="title">Places</h2>
+			<div class="container">
+				{% for place in places %}
+					<article class="place">
+						<div class="price_by_night">${{ place.price_by_night }}</div>
+						<div class="name">{{ place.name }}</div>
+					</article>
+				{% endfor %}
+			</div>
+		</section>
+		<footer>
+			<p>Holberton School</p>
+		</footer>
+	</body>
+</html>
