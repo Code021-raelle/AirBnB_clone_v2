@@ -13,6 +13,7 @@ class State(BaseModel, Base):
     cities = relationship(
             "City", backref="state", cascade="all, delete")
 
+
     @property
     def cities(self):
         """Return the list of City objects linked to the current state."""
