@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route('/states', strict_slashes=False)
 def states():
     """Displays a HTML page with a list of all State objects sorted by name."""
-    states = sorted(storage.all(State).values(), key=lambda s: s.name)
+    states = sorted(storage.all(State).values(), key=lambda state: state.name)
     return render_template('9-states.html', states=states)
 
 
@@ -19,7 +19,7 @@ def state_detail(id):
     """Display a HTML page with details of a State object and its cities."""
     state = storage.get(State, id)
     if state:
-        state.cities = sorted(state.cities, key=lambda c: c.name)
+        state.cities = sorted(state.cities, key=lambda city: city.name)
         return render_template('9-states.html', state=state)
     else:
         return render_template('9-states.html', not_found=True)

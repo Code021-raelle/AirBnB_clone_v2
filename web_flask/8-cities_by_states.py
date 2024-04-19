@@ -2,7 +2,6 @@
 from flask import Flask, render_template
 from models import storage
 from models.state import State
-from models.city import City
 
 app = Flask(__name__)
 
@@ -13,9 +12,9 @@ def cities_by_states():
     Display a HTML page with a list of all State objects
     and their cities sorted by name.
     """
-    states = sorted(storage.all(State).values(), key=lambda s: s.name)
+    states = sorted(storage.all(State).values(), key=lambda state: state.name)
     for state in states:
-        state.cities = sorted(state.cities, key=lambda c: c.name)
+        state.cities = sorted(state.cities, key=lambda city: city.name)
     return render_template('8-cities_by_states.html', states=states)
 
 
